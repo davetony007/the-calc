@@ -1,65 +1,69 @@
-import Image from "next/image";
+import type { Metadata } from "next";
+import Calculator from "@/components/Calculator";
+import AdSlot from "@/components/AdSlot";
+import { homeConfig } from "@/lib/pages";
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: homeConfig.metaTitle,
+  description: homeConfig.metaDescription,
+};
+
+export default function HomePage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+    <div className="page-layout">
+      <section className="hero">
+        <h1 className="hero-title">Percentage Calculator</h1>
+        <p className="hero-subtitle">
+          Add or subtract any percentage from any number — instantly.
+        </p>
+      </section>
+
+      <Calculator initialPercent={10} initialMode="subtract" />
+
+      <AdSlot id="after-calculator" label="Advertisement" />
+
+      <section className="seo-content">
+        <h2>How to use the percentage calculator</h2>
+        <p>
+          Enter any amount using the keypad, choose a percentage using the quick
+          buttons or type a custom value, then toggle whether you want to{" "}
+          <strong>add</strong> or <strong>take off</strong> that percentage.
+          Results update instantly — no equals button needed.
+        </p>
+        <h3>Common uses</h3>
+        <ul>
+          <li>
+            <strong>Shopping discounts</strong> — enter the original price and
+            subtract the sale percentage to see what you pay.
+          </li>
+          <li>
+            <strong>VAT</strong> — add 20% to a net price to get the
+            VAT-inclusive total, or remove 20% from a gross price to find the
+            net.
+          </li>
+          <li>
+            <strong>Pay rises</strong> — enter your salary and add your raise
+            percentage to see your new salary and how much extra you earn.
+          </li>
+          <li>
+            <strong>Tips &amp; service charges</strong> — add 10–15% to a bill
+            to calculate a tip.
+          </li>
+          <li>
+            <strong>Markups</strong> — add a percentage to a cost price to set
+            a retail price.
+          </li>
+        </ul>
+        <h3>The formula</h3>
+        <p>
+          Percentage calculators use one simple formula:{" "}
+          <em>Result = Base × (1 ± Percent ÷ 100)</em>. For example, 20% off
+          £80 is £80 × 0.80 = £64. This calculator handles all the maths for
+          you.
+        </p>
+      </section>
+
+      <AdSlot id="after-content" label="Advertisement" />
     </div>
   );
 }
