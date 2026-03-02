@@ -10,6 +10,7 @@ export interface PageConfig {
     h1: string;
     intro: string;
     faqItems: { q: string; a: string }[];
+    relatedSlugs?: string[];
 }
 
 // ─── Named presets ─────────────────────────────────────────────────────────
@@ -108,8 +109,8 @@ function makePercentOffPage(n: number): PageConfig {
         percent: n,
         mode: "subtract",
         title: `${n}% Off Calculator`,
-        metaTitle: `${n}% Off Calculator – What is ${n}% Off a Price?`,
-        metaDescription: `Quickly work out ${n}% off any price. Enter the original price to see the discount amount and the final sale price.`,
+        metaTitle: `${n}% Off Calculator – What is ${n}% Off? Save More Today`,
+        metaDescription: `What is ${n}% off? Enter any price to instantly see your saving and final price. Fast, free ${n}% discount calculator — no sign-up needed.`,
         h1: `${n}% Off Calculator`,
         intro: `Use this calculator to find out how much ${n}% off saves you on any price. Enter the original price and instantly see the amount you save and the final price you pay.`,
         faqItems: [
@@ -153,6 +154,10 @@ function makePercentIncreaseP(n: number): PageConfig {
                 q: `What is £100 plus ${n}%?`,
                 a: `£100 + ${n}% = £${100 + n}.`,
             },
+            {
+                q: `Is adding ${n}% the same as multiplying by ${(1 + n / 100).toFixed(2)}?`,
+                a: `Yes — adding ${n}% is mathematically identical to multiplying by ${(1 + n / 100).toFixed(2)}.`,
+            },
         ],
     };
 }
@@ -171,9 +176,9 @@ const percentOffPages: PageConfig[] = Array.from({ length: 99 }, (_, i) =>
     makePercentOffPage(i + 1)
 );
 
-// A subset of add-X-percent pages for common values
-const addPercentPages: PageConfig[] = [5, 10, 15, 20, 25, 30, 50].map(
-    makePercentIncreaseP
+// All 1–99 add-percent pages (mirrors percent-off set for equal page surface area)
+const addPercentPages: PageConfig[] = Array.from({ length: 99 }, (_, i) =>
+    makePercentIncreaseP(i + 1)
 );
 
 export const allPages: PageConfig[] = [
@@ -181,6 +186,29 @@ export const allPages: PageConfig[] = [
     ...percentOffPages,
     ...addPercentPages,
 ];
+
+// Attach related slugs for internal linking
+allPages.forEach((page) => {
+    const nearby: string[] = [];
+    // Link percent-off pages to adjacent values
+    if (page.mode === "subtract" && !namedPresets.includes(page)) {
+        const adj = [-5, 5, -10, 10].map((d) => page.percent + d).filter((n) => n >= 1 && n <= 99);
+        adj.forEach((n) => nearby.push(`${n}-percent-off`));
+        // Link to matching add-percent page
+        nearby.push(`add-${page.percent}-percent`);
+    } else if (page.mode === "add" && !namedPresets.includes(page)) {
+        const adj = [-5, 5, -10, 10].map((d) => page.percent + d).filter((n) => n >= 1 && n <= 99);
+        adj.forEach((n) => nearby.push(`add-${n}-percent`));
+        // Link to matching percent-off page
+        nearby.push(`${page.percent}-percent-off`);
+    }
+    // All pages get links to named presets
+    if (page.slug !== "vat-calculator") nearby.push("vat-calculator");
+    if (page.slug !== "pay-rise-calculator") nearby.push("pay-rise-calculator");
+    if (page.slug !== "sales-discount-calculator") nearby.push("sales-discount-calculator");
+    // Deduplicate and limit to 6
+    page.relatedSlugs = [...new Set(nearby)].slice(0, 6);
+});
 
 export function getPageBySlug(slug: string): PageConfig | undefined {
     return allPages.find((p) => p.slug === slug);

@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://the-calc-gamma.vercel.app
+
+# Sitemaps
+Sitemap: https://the-calc-gamma.vercel.app/sitemap.xml
