@@ -27,6 +27,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  verification: {
+    google: "e22Me2xmW74B2UEGaXRO-y9IzQy0t3NA8Dcd2Ub7DTw",
+  },
 };
 
 // Sitewide structured data
